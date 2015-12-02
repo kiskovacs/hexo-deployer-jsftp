@@ -122,7 +122,7 @@ function uploadDirectory (structure, callback) {
         return callback(error);
       }
 
-      hexo.log.log('upload', 'Uploaded: %s', structure.path + '/' + file);
+      hexo.log.info('upload', 'Uploaded: %s', structure.path + '/' + file);
       count++;
 
       nextFile();
@@ -140,8 +140,8 @@ function getConnOpts(args) {
   var connOpts = {},
 
     setConnProp = function(prop) {
-      if(typeof args.connection[prop] !== 'undefined') {
-        connOpts[prop] = args.connection[prop];
+      if(typeof args[prop] !== 'undefined') {
+        connOpts[prop] = args[prop];
       }
     },
 
@@ -151,7 +151,7 @@ function getConnOpts(args) {
       }
     };
 
-  if (args.connection) {
+  if (args) {
 
     ['host', 'port', 'secure', 'secureOptions', 'user', 'password', 'connTimeout', 'pasvTimeout', 'keepalive'].forEach(setConnProp);
 
@@ -179,7 +179,7 @@ function getConnOpts(args) {
 
 hexo.extend.deployer.register('ftp', function (args, callback) {
 
-  hexo.log.setAlias('upload', 'info');
+  //hexo.log.setAlias('upload', 'info');
 
   var start = Date.now();
   count = 0;
@@ -191,7 +191,7 @@ hexo.extend.deployer.register('ftp', function (args, callback) {
     client.end();
     return callback.apply(this, arguments);
 
-  }
+  };
 
   listFiles(public_dir, function (error, structure) {
 
@@ -217,7 +217,7 @@ hexo.extend.deployer.register('ftp', function (args, callback) {
 
             var elapsed = (Date.now() - start) / 1000;
 
-            hexo.log.log('upload', '%d files uploaded in %ss', count, elapsed.toFixed(3));
+            hexo.log.info('upload', '%d files uploaded in %ss', count, elapsed.toFixed(3));
             return finish();
 
           });
@@ -232,4 +232,4 @@ hexo.extend.deployer.register('ftp', function (args, callback) {
 
   });
 
-})
+});
